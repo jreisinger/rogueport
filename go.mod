@@ -1,3 +1,3 @@
-module github.com/jreisinger/monport
+module github.com/jreisinger/rogueport
 
 go 1.17

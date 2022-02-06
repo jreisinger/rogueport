@@ -1,5 +1,4 @@
-// Monport monitors your open TCP ports. Based on config file it shows you which
-// ports are not supposed to be open.
+// Rogueport identifies TCP ports which are not supposed to be open.
 package main
 
 import (
@@ -8,7 +7,7 @@ import (
 	"os"
 )
 
-var configFile = flag.String("c", "monport.json", "config file")
+var configFile = flag.String("c", "rogueport.json", "config file")
 
 func main() {
 	log.SetPrefix(os.Args[0] + ": ")

@@ -89,8 +89,10 @@ func contains(s []int, e int) bool {
 
 /*
 Generated from nmap's list of ports like this:
-cat /usr/local/share/nmap/nmap-services | grep -v '^#' | \
-perl -lane 'print if @F[2] > 0.0001' | perl -lane '/(\d+)\/tcp/ && print "$1,"'
+grep -v '^#' /usr/local/share/nmap/nmap-services | \
+perl -lane '@F[2] > 0.0001 && print' | \
+perl -lane '@F[1] =~ /(\d+)\/tcp/ && print $1' | \
+sort -n | uniq
 */
 var portsToScan = []int{
 	1,

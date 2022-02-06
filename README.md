@@ -3,6 +3,9 @@ helps you identify TCP ports which are not supposed to be open. It scans the
 hosts defined in the config file for open ports. Then it compares the scan
 results with the expected state.
 
+NOTE: scan only your hosts or hosts you have
+[permission](http://scanme.nmap.org/) to scan!
+
 Install binary:
 
 ```

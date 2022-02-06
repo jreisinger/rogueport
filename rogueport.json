@@ -1,0 +1,10 @@
+[
+    {
+        "host": "scanme.nmap.org",
+        "ports": [ 22 ]
+    },
+    {
+        "host": "scanme2.nmap.org",
+        "ports": [ 22, 80, 443 ]
+    }
+]

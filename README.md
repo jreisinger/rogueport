@@ -4,6 +4,8 @@ helps you identify TCP ports which are not supposed to be open.
 Install binary:
 
 ```
+git clone git@github.com:jreisinger/rogueport.git
+cd rogueport
 go install
 ```
 

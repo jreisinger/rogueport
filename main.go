@@ -1,5 +1,5 @@
-// Monport monitors your TCP ports. Based on config file it shows you which
-// ports to open and which to close.
+// Monport monitors your open TCP ports. Based on config file it shows you which
+// ports are not supposed to be open.
 package main
 
 import (

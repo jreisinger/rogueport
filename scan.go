@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net"
 	"sort"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -44,25 +43,17 @@ func (h *host) scan() {
 
 // eval evaluates expected and actual open ports
 func (h *host) eval() {
-	var shouldOpen []int
-	var shouldClose []int
-	for _, expected := range h.portsExpected {
-		if !contains(h.portsOpen, expected) {
-			shouldOpen = append(shouldOpen, expected)
+	var out []string
+	for _, p := range h.portsOpen {
+		var s string
+		if contains(h.portsExpected, p) {
+			s = fmt.Sprintf("%d ✓", p)
+		} else {
+			s = fmt.Sprintf("%d ✗", p)
 		}
+		out = append(out, s)
 	}
-	for _, open := range h.portsOpen {
-		if !contains(h.portsExpected, open) {
-			shouldClose = append(shouldClose, open)
-		}
-	}
-	fmt.Printf("%s %s\n", h.name, strings.Join(is2ss(h.portsOpen), ", "))
-	if len(shouldOpen) > 0 {
-		fmt.Printf("👉 you should open %s\n", strings.Join(is2ss(shouldOpen), ", "))
-	}
-	if len(shouldClose) > 0 {
-		fmt.Printf("👉 you should close %s\n", strings.Join(is2ss(shouldClose), ", "))
-	}
+	fmt.Printf("%s\t%s\n", h.name, strings.Join(out, " "))
 }
 
 func scanner(host string, ports, results chan int) {
@@ -76,14 +67,6 @@ func scanner(host string, ports, results chan int) {
 		conn.Close()
 		results <- port
 	}
-}
-
-func is2ss(is []int) []string {
-	var ss []string
-	for _, i := range is {
-		ss = append(ss, strconv.Itoa(i))
-	}
-	return ss
 }
 
 func contains(s []int, e int) bool {

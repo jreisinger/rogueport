@@ -53,20 +53,29 @@ func (h *host) eval() {
 		}
 		out = append(out, s)
 	}
-	fmt.Printf("%s\t%s\n", h.name, strings.Join(out, " "))
+	fmt.Printf("%-25s %s\n", h.name, strings.Join(out, " "))
 }
 
 func scanner(host string, ports, results chan int) {
 	for port := range ports {
-		addr := fmt.Sprintf("%s:%d", host, port)
-		conn, err := net.DialTimeout("tcp", addr, time.Millisecond*100)
-		if err != nil {
+		if canConnect(host, port) {
+			results <- port
+		} else {
 			results <- 0
-			continue
 		}
-		conn.Close()
-		results <- port
 	}
+}
+
+func canConnect(host string, port int) bool {
+	addr := fmt.Sprintf("%s:%d", host, port)
+	for _, timeout := range []int{50, 100, 300} {
+		conn, err := net.DialTimeout("tcp", addr, time.Millisecond*time.Duration(timeout))
+		if err == nil {
+			conn.Close()
+			return true
+		}
+	}
+	return false
 }
 
 func contains(s []int, e int) bool {

@@ -9,7 +9,8 @@ cd rogueport
 go install
 ```
 
-Define ports you need to have open (i.e. you're running services on them), e.g.:
+Define ports you need to have open (i.e. you're running services on them), for
+example:
 
 ```
 $ cat rogueport.json

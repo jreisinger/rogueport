@@ -47,9 +47,9 @@ func (h *host) eval() {
 	for _, p := range h.portsOpen {
 		var s string
 		if contains(h.portsExpected, p) {
-			s = fmt.Sprintf("%d ✓", p)
+			s = fmt.Sprintf("%d✓", p)
 		} else {
-			s = fmt.Sprintf("%d ✗", p)
+			s = fmt.Sprintf("%d✗", p)
 		}
 		out = append(out, s)
 	}

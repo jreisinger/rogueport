@@ -33,6 +33,6 @@ Check there are no unexpected ports open:
 
 ```
 $ rogueport
-scanme.nmap.org           22 ✓ 80 ✗
-scanme2.nmap.org          22 ✓ 25 ✗ 80 ✓ 443 ✓
+scanme.nmap.org           22✓ 80✗
+scanme2.nmap.org          22✓ 25✗ 80✓ 443✓
 ```

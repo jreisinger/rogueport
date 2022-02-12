@@ -10,7 +10,8 @@ import (
 func scan(hosts []string, mostCommonPorts int) (map[string][]string, error) {
 	scanner, err := nmap.NewScanner(
 		nmap.WithTargets(hosts...),
-		nmap.WithMostCommonPorts(int(mostCommonPorts)),
+		nmap.WithMostCommonPorts(int(mostCommonPorts)), // --top-ports
+		nmap.WithSkipHostDiscovery(),                   // -Pn
 	)
 	if err != nil {
 		return nil, err

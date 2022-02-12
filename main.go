@@ -10,7 +10,7 @@ import (
 var configFile = flag.String("c", "rogueport.json", "config file")
 var mostCommonPorts = flag.Int("n", 200, "number of most common ports to scan")
 var syn = flag.Bool("s", false, "TCP SYN (half-open) scan; run with sudo")
-var udp = flag.Bool("u", false, "UDP scan; run with sudo")
+var udp = flag.Bool("u", false, "UDP scan (it's slow); run with sudo")
 
 func main() {
 	log.SetPrefix(os.Args[0] + ": ")

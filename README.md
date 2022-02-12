@@ -1,5 +1,5 @@
 Keeping attack surface minimal is one of the security best practices. Rogueport
-helps you identify network ports which are not supposed to be open. It scans the
+identifies network ports which are not supposed to be open. It scans the
 hostnames defined in the config file for open ports. Then it compares the scan
 results with the expected state defined in the config file. NOTE: scan only your
 hosts or hosts you have [permission](http://scanme.nmap.org/) to scan!

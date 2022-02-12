@@ -7,7 +7,7 @@ import (
 	"github.com/Ullaakut/nmap/v2"
 )
 
-func scan(conf Ports) (map[string][]int, error) {
+func scan(conf Ports) (map[string][]string, error) {
 	var targets []string
 	for host := range conf {
 		targets = append(targets, host)
@@ -26,7 +26,7 @@ func scan(conf Ports) (map[string][]int, error) {
 		return nil, err
 	}
 
-	ports := make(map[string][]int)
+	ports := make(map[string][]string)
 
 	for _, host := range result.Hosts {
 		if len(host.Ports) == 0 || len(host.Addresses) == 0 {
@@ -38,11 +38,12 @@ func scan(conf Ports) (map[string][]int, error) {
 		hostname := host.Hostnames[0].Name
 
 		for _, port := range host.Ports {
-			if port.Protocol != "tcp" || port.State.State != "open" {
+			if port.State.State != "open" {
 				continue
 			}
 			// fmt.Printf("\tPort %d/%s %s %s\n", port.ID, port.Protocol, port.State, port.Service.Name)
-			ports[hostname] = append(ports[hostname], int(port.ID))
+			p := fmt.Sprintf("%d/%s", port.ID, port.Protocol)
+			ports[hostname] = append(ports[hostname], p)
 		}
 	}
 
@@ -50,15 +51,15 @@ func scan(conf Ports) (map[string][]int, error) {
 }
 
 // eval evaluates expected and actual open ports
-func eval(conf map[string][]int, scan map[string][]int) {
+func eval(conf map[string][]string, scan map[string][]string) {
 	for host, ports := range scan {
 		var out []string
 		var s string
 		for _, port := range ports {
 			if contains(conf[host], port) {
-				s = fmt.Sprintf("%d✓", port)
+				s = fmt.Sprintf("%s✓", port)
 			} else {
-				s = fmt.Sprintf("%d✗", port)
+				s = fmt.Sprintf("%s✗", port)
 			}
 			out = append(out, s)
 		}
@@ -66,7 +67,7 @@ func eval(conf map[string][]int, scan map[string][]int) {
 	}
 }
 
-func contains(s []int, e int) bool {
+func contains(s []string, e string) bool {
 	for _, a := range s {
 		if a == e {
 			return true

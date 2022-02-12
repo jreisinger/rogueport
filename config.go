@@ -11,21 +11,21 @@ var ErrConfig = errors.New("wrong config file, should be like:" + configExample)
 var configExample = `
 [
     {
-        "host": "host1.example.com",
-        "ports": [ 22 ]
+        "hostname": "host1.example.com",
+        "ports": [ "22/tcp" ]
     },
     {
-        "host": "host2.example.com",
-        "ports": [ 22, 80, 443 ]
+        "hostname": "host2.example.com",
+        "ports": [ "22/tcp", "80/tcp", "443/tcp" ]
     }
 ]`
 
 type Config []struct {
-	Host  string `json:"host"`
-	Ports []int  `json:"ports"`
+	Hostname string   `json:"hostname"`
+	Ports    []string `json:"ports"`
 }
 
-type Ports map[string][]int
+type Ports map[string][]string
 
 func readConfigFile(file string) (Ports, error) {
 	f, err := os.Open(file)
@@ -46,7 +46,7 @@ func readConfigFile(file string) (Ports, error) {
 
 	ports := Ports{}
 	for _, c := range conf {
-		ports[c.Host] = c.Ports
+		ports[c.Hostname] = c.Ports
 	}
 
 	return ports, nil
@@ -57,7 +57,7 @@ func validateConfig(conf Config) error {
 		return ErrConfig
 	}
 	for _, c := range conf {
-		if c.Host == "" {
+		if c.Hostname == "" {
 			return ErrConfig
 		}
 		if c.Ports == nil {

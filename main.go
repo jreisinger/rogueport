@@ -8,7 +8,7 @@ import (
 )
 
 var configFile = flag.String("c", "rogueport.json", "config file")
-var mostCommonPorts = flag.Int("n", 100, "number of most common ports to scan")
+var mostCommonPorts = flag.Int("n", 200, "number of most common ports to scan")
 
 func main() {
 	log.SetPrefix(os.Args[0] + ": ")

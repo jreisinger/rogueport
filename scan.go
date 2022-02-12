@@ -17,7 +17,13 @@ func scan(hosts []string, mostCommonPorts int) (map[string][]string, error) {
 		return nil, err
 	}
 
-	result, _, err := scanner.Run()
+	progress := make(chan float32, 1)
+	go func() { // Function to listen and print the progress
+		for p := range progress {
+			fmt.Printf("\rProgress: %3.0f%%", p)
+		}
+	}()
+	result, _, err := scanner.RunWithProgress(progress)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +62,7 @@ func eval(conf map[string][]string, scan map[string][]string) {
 			}
 			out = append(out, s)
 		}
-		fmt.Printf("%-25s %s\n", host, strings.Join(out, " "))
+		fmt.Printf("\r%-25s %s\n", host, strings.Join(out, " "))
 	}
 }
 

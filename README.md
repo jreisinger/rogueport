@@ -37,4 +37,5 @@ scanme.nmap.org           22/tcp ✓ 80/tcp ✗
 scanme2.nmap.org          22/tcp ✓ 25/tcp ✗ 80/tcp ✓ 443/tcp ✓
 ```
 
-Rogueport uses [nmap](https://nmap.org/) to do the scanning, so you need to have it installed.
+Rogueport uses [nmap](https://nmap.org/) to do the scanning, so you need to have
+it installed (e.g. `apt get install nmap` or `brew install nmap`).

@@ -1,22 +1,16 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/Ullaakut/nmap/v2"
 )
 
-func scan(hosts []string, mostCommonPorts int, timeout time.Duration) (map[string][]string, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
-	defer cancel()
-
+func scan(hosts []string, mostCommonPorts int) (map[string][]string, error) {
 	scanner, err := nmap.NewScanner(
 		nmap.WithTargets(hosts...),
 		nmap.WithMostCommonPorts(int(mostCommonPorts)),
-		nmap.WithContext(ctx),
 	)
 	if err != nil {
 		return nil, err

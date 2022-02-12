@@ -9,7 +9,7 @@ Install binary:
 ```
 git clone git@github.com:jreisinger/rogueport.git
 cd rogueport
-go install
+make install
 ```
 
 Define ports you need to have open (i.e. you're running services on them), for
@@ -32,12 +32,12 @@ $ cat rogueport.json
 Check there are no unexpected ports open:
 
 ```
-$ rogueport -n 1000
-scanme.nmap.org           22/tcp ✓ 80/tcp ✗ 9929/tcp ✗ 31337/tcp ✗
+$ rogueport
+scanme.nmap.org           22/tcp ✓ 80/tcp ✗
 scanme2.nmap.org          22/tcp ✓ 25/tcp ✗ 80/tcp ✓ 443/tcp ✓
 
-$ sudo rogueport -s -u
-scanme.nmap.org           22/tcp ✓ 80/tcp ✗ 123/udp ✗
+$ sudo rogueport -s -u -n 1000 # can take a while
+scanme.nmap.org           22/tcp ✓ 80/tcp ✗ 9929/tcp ✗ 31337/tcp ✗ 123/udp ✗
 scanme2.nmap.org          22/tcp ✓ 25/tcp ✗ 80/tcp ✓ 443/tcp ✓
 ```
 

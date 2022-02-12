@@ -32,8 +32,8 @@ $ cat rogueport.json
 Check there are no unexpected ports open:
 
 ```
-$ rogueport
-scanme.nmap.org           22/tcp ✓ 80/tcp ✗
+$ rogueport -n 1000
+scanme.nmap.org           22/tcp ✓ 80/tcp ✗ 9929/tcp ✗ 31337/tcp ✗
 scanme2.nmap.org          22/tcp ✓ 25/tcp ✗ 80/tcp ✓ 443/tcp ✓
 ```
 

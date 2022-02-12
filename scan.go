@@ -63,9 +63,9 @@ func eval(conf map[string][]string, scan map[string][]string) {
 		var s string
 		for _, port := range ports {
 			if contains(conf[host], port) {
-				s = fmt.Sprintf("%s✓", port)
+				s = fmt.Sprintf("%s ✓", port)
 			} else {
-				s = fmt.Sprintf("%s✗", port)
+				s = fmt.Sprintf("%s ✗", port)
 			}
 			out = append(out, s)
 		}

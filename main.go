@@ -1,4 +1,4 @@
-// Rogueport identifies TCP ports which are not supposed to be open.
+// Rogueport identifies network ports which are not supposed to be open.
 package main
 
 import (
@@ -23,14 +23,16 @@ func main() {
 		log.Fatal(err)
 	}
 
-	scan, err := scan(conf, *mostCommonPorts, *timeout)
+	var hosts []string
+
+	for h := range conf {
+		hosts = append(hosts, h)
+	}
+
+	scan, err := scan(hosts, *mostCommonPorts, *timeout)
 	if err != nil {
 		log.Fatal(err)
 	}
-	eval(conf, scan)
 
-	// for _, h := range hosts {
-	// 	h.scan()
-	// 	h.eval()
-	// }
+	eval(conf, scan)
 }

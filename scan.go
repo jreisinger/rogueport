@@ -9,17 +9,12 @@ import (
 	"github.com/Ullaakut/nmap/v2"
 )
 
-func scan(conf Ports, mostCommonPorts int, timeout time.Duration) (map[string][]string, error) {
+func scan(hosts []string, mostCommonPorts int, timeout time.Duration) (map[string][]string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
-	var targets []string
-	for host := range conf {
-		targets = append(targets, host)
-	}
-
 	scanner, err := nmap.NewScanner(
-		nmap.WithTargets(targets...),
+		nmap.WithTargets(hosts...),
 		nmap.WithMostCommonPorts(int(mostCommonPorts)),
 		nmap.WithContext(ctx),
 	)
@@ -39,15 +34,12 @@ func scan(conf Ports, mostCommonPorts int, timeout time.Duration) (map[string][]
 			continue
 		}
 
-		// fmt.Printf("Host %q:\n", host.Addresses[0])
-		// address := host.Addresses[0].Addr
 		hostname := host.Hostnames[0].Name
 
 		for _, port := range host.Ports {
 			if port.State.State != "open" {
 				continue
 			}
-			// fmt.Printf("\tPort %d/%s %s %s\n", port.ID, port.Protocol, port.State, port.Service.Name)
 			p := fmt.Sprintf("%d/%s", port.ID, port.Protocol)
 			ports[hostname] = append(ports[hostname], p)
 		}
@@ -56,7 +48,7 @@ func scan(conf Ports, mostCommonPorts int, timeout time.Duration) (map[string][]
 	return ports, nil
 }
 
-// eval evaluates expected and actual open ports
+// eval evaluates expected and actual open ports on the hosts
 func eval(conf map[string][]string, scan map[string][]string) {
 	for host, ports := range scan {
 		var out []string

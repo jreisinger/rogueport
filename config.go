@@ -25,9 +25,7 @@ type Config []struct {
 	Ports    []string `json:"ports"`
 }
 
-type Ports map[string][]string
-
-func readConfigFile(file string) (Ports, error) {
+func readConfigFile(file string) (map[string][]string, error) {
 	f, err := os.Open(file)
 	if err != nil {
 		return nil, err
@@ -44,7 +42,8 @@ func readConfigFile(file string) (Ports, error) {
 		return nil, err
 	}
 
-	ports := Ports{}
+	ports := make(map[string][]string)
+
 	for _, c := range conf {
 		ports[c.Hostname] = c.Ports
 	}

@@ -1,4 +1,4 @@
-// Rogueport identifies TCP ports which are not supposed to be open.
+// Rogueport identifies network ports which are not supposed to be open.
 package main
 
 import (
@@ -8,6 +8,7 @@ import (
 )
 
 var configFile = flag.String("c", "rogueport.json", "config file")
+var mostCommonPorts = flag.Int("n", 100, "number of most common ports to scan")
 
 func main() {
 	log.SetPrefix(os.Args[0] + ": ")
@@ -15,13 +16,21 @@ func main() {
 
 	flag.Parse()
 
-	hosts, err := readConfigFile(*configFile)
+	conf, err := readConfigFile(*configFile)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	for _, h := range hosts {
-		h.scan()
-		h.eval()
+	var hosts []string
+
+	for h := range conf {
+		hosts = append(hosts, h)
 	}
+
+	scan, err := scan(hosts, *mostCommonPorts)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	eval(conf, scan)
 }

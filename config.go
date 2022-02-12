@@ -11,28 +11,28 @@ var ErrConfig = errors.New("wrong config file, should be like:" + configExample)
 var configExample = `
 [
     {
-        "host": "host1.example.com",
-        "ports": [ 22 ]
+        "hostname": "host1.example.com",
+        "ports": [ "22/tcp" ]
     },
     {
-        "host": "host2.example.com",
-        "ports": [ 22, 80, 443 ]
+        "hostname": "host2.example.com",
+        "ports": [ "22/tcp", "80/tcp", "443/tcp" ]
     }
 ]`
 
-type config []struct {
-	Host  string `json:"host"`
-	Ports []int  `json:"ports"`
+type Config []struct {
+	Hostname string   `json:"hostname"`
+	Ports    []string `json:"ports"`
 }
 
-func readConfigFile(file string) ([]*host, error) {
+func readConfigFile(file string) (map[string][]string, error) {
 	f, err := os.Open(file)
 	if err != nil {
 		return nil, err
 	}
 	defer f.Close()
 
-	var conf config
+	var conf Config
 	decoder := json.NewDecoder(f)
 	if err := decoder.Decode(&conf); err != nil {
 		return nil, ErrConfig
@@ -42,20 +42,21 @@ func readConfigFile(file string) ([]*host, error) {
 		return nil, err
 	}
 
-	var hosts []*host
+	ports := make(map[string][]string)
+
 	for _, c := range conf {
-		hosts = append(hosts, &host{name: c.Host, portsExpected: c.Ports})
+		ports[c.Hostname] = c.Ports
 	}
 
-	return hosts, nil
+	return ports, nil
 }
 
-func validateConfig(conf config) error {
+func validateConfig(conf Config) error {
 	if len(conf) == 0 {
 		return ErrConfig
 	}
 	for _, c := range conf {
-		if c.Host == "" {
+		if c.Hostname == "" {
 			return ErrConfig
 		}
 		if c.Ports == nil {

@@ -1,8 +1,8 @@
 Keeping attack surface minimal is one of the security best practices. Rogueport
-helps you identify TCP ports which are not supposed to be open. It scans the
-hosts defined in the config file for open ports. Then it compares the scan
-results with the expected state. NOTE: scan only your hosts or hosts you have
-[permission](http://scanme.nmap.org/) to scan!
+helps you identify network ports which are not supposed to be open. It scans the
+hostnames defined in the config file for open ports. Then it compares the scan
+results with the expected state defined in the config file. NOTE: scan only your
+hosts or hosts you have [permission](http://scanme.nmap.org/) to scan!
 
 Install binary:
 
@@ -19,12 +19,12 @@ example:
 $ cat rogueport.json
 [
     {
-        "host": "scanme.nmap.org",
-        "ports": [ 22 ]
+        "hostname": "scanme.nmap.org",
+        "ports": [ "22/tcp" ]
     },
     {
-        "host": "scanme2.nmap.org",
-        "ports": [ 22, 80, 443 ]
+        "hostname": "scanme2.nmap.org",
+        "ports": [ "22/tcp", "80/tcp", "443/tcp" ]
     }
 ]
 ```
@@ -33,6 +33,6 @@ Check there are no unexpected ports open:
 
 ```
 $ rogueport
-scanme.nmap.org           22✓ 80✗
-scanme2.nmap.org          22✓ 25✗ 80✓ 443✓
+scanme.nmap.org           22/tcp ✓ 80/tcp ✗
+scanme2.nmap.org          22/tcp ✓ 25/tcp ✗ 80/tcp ✓ 443/tcp ✓
 ```

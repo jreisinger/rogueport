@@ -20,19 +20,21 @@ var configExample = `
     }
 ]`
 
-type config []struct {
+type Config []struct {
 	Host  string `json:"host"`
 	Ports []int  `json:"ports"`
 }
 
-func readConfigFile(file string) ([]*host, error) {
+type Ports map[string][]int
+
+func readConfigFile(file string) (Ports, error) {
 	f, err := os.Open(file)
 	if err != nil {
 		return nil, err
 	}
 	defer f.Close()
 
-	var conf config
+	var conf Config
 	decoder := json.NewDecoder(f)
 	if err := decoder.Decode(&conf); err != nil {
 		return nil, ErrConfig
@@ -42,15 +44,15 @@ func readConfigFile(file string) ([]*host, error) {
 		return nil, err
 	}
 
-	var hosts []*host
+	ports := Ports{}
 	for _, c := range conf {
-		hosts = append(hosts, &host{name: c.Host, portsExpected: c.Ports})
+		ports[c.Host] = c.Ports
 	}
 
-	return hosts, nil
+	return ports, nil
 }
 
-func validateConfig(conf config) error {
+func validateConfig(conf Config) error {
 	if len(conf) == 0 {
 		return ErrConfig
 	}

@@ -15,13 +15,19 @@ func main() {
 
 	flag.Parse()
 
-	hosts, err := readConfigFile(*configFile)
+	conf, err := readConfigFile(*configFile)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	for _, h := range hosts {
-		h.scan()
-		h.eval()
+	scan, err := scan(conf)
+	if err != nil {
+		log.Fatal(err)
 	}
+	eval(conf, scan)
+
+	// for _, h := range hosts {
+	// 	h.scan()
+	// 	h.eval()
+	// }
 }

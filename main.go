@@ -5,9 +5,12 @@ import (
 	"flag"
 	"log"
 	"os"
+	"time"
 )
 
 var configFile = flag.String("c", "rogueport.json", "config file")
+var mostCommonPorts = flag.Int("n", 100, "number of most common ports to scan")
+var timeout = flag.Duration("t", 30*time.Second, "scan timeout")
 
 func main() {
 	log.SetPrefix(os.Args[0] + ": ")
@@ -20,7 +23,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	scan, err := scan(conf)
+	scan, err := scan(conf, *mostCommonPorts, *timeout)
 	if err != nil {
 		log.Fatal(err)
 	}

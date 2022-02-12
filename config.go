@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-var ErrConfig = errors.New("wrong config file, should be like:" + configExample)
+var errConfig = errors.New("wrong config file, should be like:" + configExample)
 
 var configExample = `
 [
@@ -20,7 +20,7 @@ var configExample = `
     }
 ]`
 
-type Config []struct {
+type config []struct {
 	Hostname string   `json:"hostname"`
 	Ports    []string `json:"ports"`
 }
@@ -32,10 +32,10 @@ func readConfigFile(file string) (map[string][]string, error) {
 	}
 	defer f.Close()
 
-	var conf Config
+	var conf config
 	decoder := json.NewDecoder(f)
 	if err := decoder.Decode(&conf); err != nil {
-		return nil, ErrConfig
+		return nil, errConfig
 	}
 
 	if err := validateConfig(conf); err != nil {
@@ -51,16 +51,16 @@ func readConfigFile(file string) (map[string][]string, error) {
 	return ports, nil
 }
 
-func validateConfig(conf Config) error {
+func validateConfig(conf config) error {
 	if len(conf) == 0 {
-		return ErrConfig
+		return errConfig
 	}
 	for _, c := range conf {
 		if c.Hostname == "" {
-			return ErrConfig
+			return errConfig
 		}
 		if c.Ports == nil {
-			return ErrConfig
+			return errConfig
 		}
 	}
 	return nil

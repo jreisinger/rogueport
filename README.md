@@ -35,6 +35,10 @@ Check there are no unexpected ports open:
 $ rogueport -n 1000
 scanme.nmap.org           22/tcp ✓ 80/tcp ✗ 9929/tcp ✗ 31337/tcp ✗
 scanme2.nmap.org          22/tcp ✓ 25/tcp ✗ 80/tcp ✓ 443/tcp ✓
+
+$ sudo rogueport -s -u
+scanme.nmap.org           22/tcp ✓ 80/tcp ✗ 123/udp ✗
+scanme2.nmap.org          22/tcp ✓ 25/tcp ✗ 80/tcp ✓ 443/tcp ✓
 ```
 
 Rogueport uses [nmap](https://nmap.org/) to do the scanning, so you need to have
